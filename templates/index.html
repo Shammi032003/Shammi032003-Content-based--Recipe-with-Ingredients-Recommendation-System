@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipe Recommender</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        body {
+            background-image: url('{{ url_for('static', filename='cooking-background.jpg') }}'); /* Adjust path to cooking background image */
+            background-size: cover;
+            background-position: center;
+            padding-top: 50px; /* Adjust as needed */
+            color: #333; /* Default text color */
+        }
+        .container {
+            max-width: 800px;
+            margin-top: 50px;
+        }
+        .form-group {
+            text-align: center; /* Center form within container */
+        }
+        .btn-primary {
+            background-color: #4CAF50; /* Custom primary button color */
+            border-color: #4CAF50;
+        }
+        .btn-primary:hover {
+            background-color: #45a049; /* Darker green on hover */
+        }
+        .btn-logout {
+            background-color: #dc3545; /* Custom logout button color */
+            border-color: #dc3545;
+        }
+        .btn-logout:hover {
+            background-color: #c82333; /* Darker red on hover */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-white mb-4">Recipe Recommender</h1>
+        
+        <form method="POST" action="{{ url_for('index') }}">
+            {{ form.hidden_tag() }}
+            <div class="form-group">
+                {{ form.dish_feeling.label(class="font-weight-bold text-white") }}
+                {{ form.dish_feeling(class="form-control") }}
+                {% if form.dish_feeling.errors %}
+                    <small class="form-text text-danger">{{ form.dish_feeling.errors|join(', ') }}</small>
+                {% endif %}
+            </div>
+            <button type="submit" class="btn btn-primary">Get Recommendations</button>
+        </form>
+        
+        <!-- Logout Button -->
+        <form action="{{ url_for('logout') }}" method="post" class="mt-3 text-center">
+            <button type="submit" class="btn btn-logout">Logout</button>
+        </form>
+    </div>
+</body>
+</html>
