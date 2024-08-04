@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipe Ingredients</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        body {
+            background-image: url('{{ url_for('static', filename='cooking-background.jpg') }}'); /* Same background image as homepage */
+            background-size: cover;
+            background-position: center;
+            padding-top: 50px; /* Adjust as needed */
+            color: #333; /* Default text color */
+        }
+        .container {
+            max-width: 800px;
+            margin-top: 50px;
+        }
+        .card {
+            border: none;
+            border-radius: 10px;
+            background-color: rgba(255, 255, 255, 0.8); /* Adjust opacity for blur effect */
+            backdrop-filter: blur(10px); /* Apply blur effect to card background */
+            transition: transform 0.3s ease-in-out;
+            margin-bottom: 20px;
+        }
+        .card-body {
+            padding: 20px;
+        }
+        .card-title {
+            font-size: 1.5em;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .card-text {
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card bg-light shadow-sm">
+            <div class="card-body">
+                <h2 class="card-title">Ingredients</h2>
+                <ul class="card-text">
+                    {% for ingredient in ingredients %}
+                    <li>{{ ingredient }}</li>
+                    {% endfor %}
+                </ul>
+                <a href="{{ url_for('index') }}" class="btn btn-primary">Back to Home</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipe Recommendations</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        body {
+            background-image: url('{{ url_for('static', filename='cooking-background.jpg') }}');
+            background-size: cover;
+            background-position: center;
+            padding-top: 50px;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin-top: 50px;
+        }
+        .card {
+            border: none;
+            border-radius: 10px;
+            background-color: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s ease-in-out;
+            margin-bottom: 20px;
+        }
+        .card:hover {
+            transform: scale(1.02);
+        }
+        .card-body {
+            padding: 20px;
+        }
+        .card-title {
+            font-size: 1.5em;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .card-text {
+            color: #666;
+        }
+        .card-text-success {
+            color: #4CAF50;
+            font-weight: bold;
+        }
+        .feedback-text {
+            font-weight: bold;
+        }
+        .feedback-form {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-white mb-4">Recommended Recipes</h1>
+        <div class="row">
+            {% for recipe in recommendations %}
+            <div class="col-md-6">
+                <div class="card bg-light shadow-sm">
+                    <div class="card-body">
+                        <h2 class="card-title">
+                            <a href="{{ url_for('recipe_details', recipe_index=recipe.index) }}">{{ recipe.title }}</a>
+                        </h2>
+                        <p class="card-text">Calories: {{ recipe.calories }}</p>
+                        <p class="card-text">Fat: {{ recipe.fat }}</p>
+                        <p class="card-text-success">Cosine Similarity: {{ recipe.cosine_similarity }}</p>
+                        <p class="feedback-text">{{ recipe.feedback_text }}</p>
+                        <p class="card-text">
+                            <a href="{{ recipe.youtube_link }}" target="_blank">Watch Recipe Video</a>
+                        </p>
+                        <!-- Feedback form -->
+                        <div class="feedback-form">
+                            <h3 class="text-white">Give Feedback</h3>
+                            <form action="{{ url_for('give_feedback') }}" method="post">
+                                <input type="hidden" name="recipe_index" value="{{ recipe.index }}">
+                                <button type="submit" name="feedback" value="like" class="btn btn-success">Like</button>
+                                <button type="submit" name="feedback" value="dislike" class="btn btn-danger">Dislike</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>
