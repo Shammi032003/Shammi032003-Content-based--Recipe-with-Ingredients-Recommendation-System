@@ -1,0 +1,25 @@
+/* static/styles.css */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden; /* Ensure no horizontal scrollbar due to image */
+}
+
+.container {
+    max-width: 800px; /* Adjust as per your design */
+    margin-top: 50px;
+}
+
+.form-group {
+    margin-bottom: 20px; /* Space below form group */
+}
+
+.btn-primary {
+    background-color: #4CAF50; /* Custom primary button color */
+    border-color: #4CAF50;
+}
+
+.btn-primary:hover {
+    background-color: #45a049; /* Darker green on hover */
+}
