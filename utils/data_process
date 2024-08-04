@@ -1,0 +1,57 @@
+# data_processing.py
+
+import pandas as pd
+from sklearn.feature_extraction.text import TfidfVectorizer
+
+def load_data(file_path):
+    """
+    Load the recipe dataset from CSV file.
+    
+    Parameters:
+    - file_path (str): Path to the CSV file containing recipe data.
+    
+    Returns:
+    - pandas.DataFrame: DataFrame containing the loaded data.
+    """
+    return pd.read_csv(file_path)
+
+def process_data(data):
+    """
+    Process the loaded recipe data.
+    
+    Parameters:
+    - data (pandas.DataFrame): DataFrame containing the recipe data.
+    
+    Returns:
+    - pandas.DataFrame: Processed DataFrame ready for recommendation algorithms.
+    """
+    # Select relevant columns for processing
+    relevant_columns = ['title', 'rating', 'calories', 'protein', 'fat', 'sodium']
+    data = data[relevant_columns].copy()
+    
+    # Fill missing values with 0 for numeric columns (calories, protein, fat, sodium)
+    numeric_columns = ['calories', 'protein', 'fat', 'sodium']
+    data[numeric_columns] = data[numeric_columns].fillna(0)
+    
+    # Convert 'title' column to lowercase
+    data['title'] = data['title'].str.lower()
+    
+    # Example: Use TF-IDF vectorizer to create feature vectors for text data (title)
+    vectorizer = TfidfVectorizer(stop_words='english', max_features=5000)
+    X = vectorizer.fit_transform(data['title'])
+    
+    # Convert sparse matrix to DataFrame
+    vectors_df = pd.DataFrame(X.toarray(), columns=vectorizer.get_feature_names_out())
+    
+    # Concatenate original data with vectorized features
+    processed_data = pd.concat([data.reset_index(drop=True), vectors_df], axis=1)
+    
+    return processed_data
+
+# Example usage:
+if __name__ == "__main__":
+    file_path = 'D:\\jugaad\\data\\epicurious_recipes.csv'  # Adjust path as per your file location
+    recipes_data = load_data(file_path)
+    
+    processed_data = process_data(recipes_data)
+    print(processed_data.head())
